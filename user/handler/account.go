@@ -1,12 +1,13 @@
 package handler
 
 import (
-	"fmt"
 	"net/http"
+
+	common_http "github.com/syauqeesy/accounting-service/common/http"
 )
 
 type accountHandler handler
 
 func (h *accountHandler) Register(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "account register")
+	common_http.WriteHttpResponse(w, http.StatusOK, http.StatusText(http.StatusOK), nil)
 }

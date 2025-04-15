@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"time"
 
-	common "github.com/syauqeesy/accounting-service/common/gracefull-http-shutdown"
+	common_http "github.com/syauqeesy/accounting-service/common/http"
 	"github.com/syauqeesy/accounting-service/configuration"
 	"github.com/syauqeesy/accounting-service/handler"
 	"github.com/syauqeesy/accounting-service/service"
@@ -16,7 +16,7 @@ type httpApplication struct {
 	configuration *configuration.Configuration
 	mux           *http.ServeMux
 	server        *http.Server
-	httpSignal    *common.GracefullHTTPShutdown
+	httpSignal    *common_http.GracefullHTTPShutdown
 	service       *service.Service
 	handler       *handler.Handler
 }
@@ -29,7 +29,7 @@ func (a *httpApplication) Init() error {
 	a.handler = handler.New(a.mux, a.configuration, a.service)
 
 	a.mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "user service")
+		common_http.WriteHttpResponse(w, http.StatusMethodNotAllowed, http.StatusText(http.StatusMethodNotAllowed), nil)
 	})
 
 	a.server = &http.Server{
@@ -37,7 +37,7 @@ func (a *httpApplication) Init() error {
 		Handler: a.mux,
 	}
 
-	a.httpSignal = common.NewGracefullHTTPShutdown()
+	a.httpSignal = common_http.NewGracefullHTTPShutdown()
 
 	return nil
 }
