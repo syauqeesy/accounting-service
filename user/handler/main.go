@@ -3,8 +3,8 @@ package handler
 import (
 	"net/http"
 
-	"github.com/syauqeesy/accounting-service/configuration"
-	"github.com/syauqeesy/accounting-service/service"
+	"github.com/syauqeesy/accounting-service/user/configuration"
+	"github.com/syauqeesy/accounting-service/user/service"
 )
 
 type handler struct {
@@ -26,7 +26,7 @@ func New(mux *http.ServeMux, configuration *configuration.Configuration, service
 		Account: (*accountHandler)(handler),
 	}
 
-	mux.HandleFunc("GET /account", h.Account.Register)
+	mux.HandleFunc("POST /account", h.Account.Register)
 
 	return h
 }

@@ -4,7 +4,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/syauqeesy/accounting-service/application"
+	"github.com/syauqeesy/accounting-service/user/application"
 )
 
 func main() {

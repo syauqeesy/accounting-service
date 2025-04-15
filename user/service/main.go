@@ -1,6 +1,6 @@
 package service
 
-import "github.com/syauqeesy/accounting-service/configuration"
+import "github.com/syauqeesy/accounting-service/user/configuration"
 
 type service struct {
 	Configuration *configuration.Configuration

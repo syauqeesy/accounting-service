@@ -7,9 +7,9 @@ import (
 	"time"
 
 	common_http "github.com/syauqeesy/accounting-service/common/http"
-	"github.com/syauqeesy/accounting-service/configuration"
-	"github.com/syauqeesy/accounting-service/handler"
-	"github.com/syauqeesy/accounting-service/service"
+	"github.com/syauqeesy/accounting-service/user/configuration"
+	"github.com/syauqeesy/accounting-service/user/handler"
+	"github.com/syauqeesy/accounting-service/user/service"
 )
 
 type httpApplication struct {

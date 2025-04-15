@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/syauqeesy/accounting-service/configuration"
+	"github.com/syauqeesy/accounting-service/user/configuration"
 )
 
 type Application interface {
