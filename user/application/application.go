@@ -42,7 +42,7 @@ func Run(applicationType string) error {
 }
 
 func New(applicationType string) (Application, error) {
-	config, err := configuration.Load("./config.json")
+	configuration, err := configuration.Load("./config.json")
 	if err != nil {
 		return nil, err
 	}
@@ -50,7 +50,7 @@ func New(applicationType string) (Application, error) {
 	switch applicationType {
 	case ApplicationHTTP:
 		return &httpApplication{
-			config: config,
+			configuration: configuration,
 		}, nil
 	default:
 		return nil, errors.New("invalid application type")

@@ -8,24 +8,32 @@ import (
 
 	common "github.com/syauqeesy/accounting-service/common/gracefull-http-shutdown"
 	"github.com/syauqeesy/accounting-service/configuration"
+	"github.com/syauqeesy/accounting-service/handler"
+	"github.com/syauqeesy/accounting-service/service"
 )
 
 type httpApplication struct {
-	config     *configuration.Config
-	mux        *http.ServeMux
-	server     *http.Server
-	httpSignal *common.GracefullHTTPShutdown
+	configuration *configuration.Configuration
+	mux           *http.ServeMux
+	server        *http.Server
+	httpSignal    *common.GracefullHTTPShutdown
+	service       *service.Service
+	handler       *handler.Handler
 }
 
 func (a *httpApplication) Init() error {
+	a.service = service.New(a.configuration)
+
 	a.mux = http.NewServeMux()
+
+	a.handler = handler.New(a.mux, a.configuration, a.service)
 
 	a.mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "user service")
 	})
 
 	a.server = &http.Server{
-		Addr:    a.config.HTTP.Port,
+		Addr:    a.configuration.HTTP.Port,
 		Handler: a.mux,
 	}
 
