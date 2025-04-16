@@ -20,8 +20,8 @@ const (
 	ApplicationSeeder    = "seeder"
 )
 
-func Run(applicationType string) error {
-	application, err := New(applicationType)
+func Run(applicationType string, arguments []string) error {
+	application, err := New(applicationType, arguments)
 	if err != nil {
 		fmt.Println(err.Error())
 	}
@@ -41,7 +41,7 @@ func Run(applicationType string) error {
 	return nil
 }
 
-func New(applicationType string) (Application, error) {
+func New(applicationType string, arguments []string) (Application, error) {
 	configuration, err := configuration.Load("./config.json")
 	if err != nil {
 		return nil, err
@@ -52,6 +52,17 @@ func New(applicationType string) (Application, error) {
 		return &httpApplication{
 			configuration: configuration,
 		}, nil
+	case ApplicationMigration:
+		application := &migrationApplication{
+			configuration: configuration,
+			commandType:   arguments[0],
+		}
+
+		if len(arguments) > 1 {
+			application.commandArgument = arguments[1]
+		}
+
+		return application, nil
 	default:
 		return nil, errors.New("invalid application type")
 	}

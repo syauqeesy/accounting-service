@@ -18,7 +18,17 @@ func main() {
 
 	applicationType := os.Args[1]
 
-	err := application.Run(applicationType)
+	arguments := make([]string, 0, 2)
+
+	if os.Args[1] == application.ApplicationMigration && os.Args[2] == application.MigrationGenerate && len(os.Args) > 3 {
+		arguments = append(arguments, os.Args[2], os.Args[3])
+	} else if os.Args[1] == application.ApplicationMigration && os.Args[2] != application.MigrationGenerate && len(os.Args) < 3 {
+		log.Fatal("usage: go run main.go [generate {migration_name}]")
+	} else if os.Args[1] == application.ApplicationMigration && os.Args[2] != application.MigrationGenerate {
+		arguments = append(arguments, os.Args[2])
+	}
+
+	err := application.Run(applicationType, arguments)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
