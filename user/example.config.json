@@ -7,6 +7,6 @@
     "port": 3306,
     "user": "root",
     "password": "",
-    "name": "accounting_service"
+    "name": "accounting_service_user"
   }
 }

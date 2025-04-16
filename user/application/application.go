@@ -3,6 +3,7 @@ package application
 import (
 	"errors"
 	"fmt"
+	"path/filepath"
 
 	"github.com/syauqeesy/accounting-service/user/configuration"
 )
@@ -42,7 +43,12 @@ func Run(applicationType string, arguments []string) error {
 }
 
 func New(applicationType string, arguments []string) (Application, error) {
-	configuration, err := configuration.Load("./config.json")
+	path, err := filepath.Abs("./config.json")
+	if err != nil {
+		return nil, err
+	}
+
+	configuration, err := configuration.Load(path)
 	if err != nil {
 		return nil, err
 	}
