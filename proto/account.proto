@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package account;
+
+option go_package = "compiled/account";
+
+service AccountService {
+  rpc SelectById (SelectByIdRequest) returns (AccountInfo);
+}
+
+message SelectByIdRequest {
+  string id = 1;
+}
+
+message AccountInfo {
+  string id = 1;
+  string email = 2;
+  int64 created_at = 3;
+}

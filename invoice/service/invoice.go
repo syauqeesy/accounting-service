@@ -1,6 +1,11 @@
 package service
 
-import "github.com/syauqeesy/accounting-service/invoice/payload"
+import (
+	"context"
+
+	"github.com/syauqeesy/accounting-service/invoice/payload"
+	"github.com/syauqeesy/accounting-service/proto/compiled/account"
+)
 
 type InvoiceService interface {
 	List() ([]*payload.InvoiceInfo, error)
@@ -17,7 +22,14 @@ func (s *invoiceService) List() ([]*payload.InvoiceInfo, error) {
 	}
 
 	for _, invoice := range invoices {
-		invoiceInfos = append(invoiceInfos, invoice.GetInfo())
+		result, err := s.GRPCOutbound.Account.SelectById(context.Background(), &account.SelectByIdRequest{
+			Id: invoice.UserId,
+		})
+		if err != nil {
+			return nil, err
+		}
+
+		invoiceInfos = append(invoiceInfos, invoice.GetInfo(result))
 	}
 
 	return invoiceInfos, nil

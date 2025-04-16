@@ -9,6 +9,12 @@ type Configuration struct {
 	HTTP struct {
 		Port string `json:"port"`
 	} `json:"http"`
+	GRPC struct {
+		Port    string `json:"port"`
+		Service struct {
+			User string `json:"user"`
+		} `json:"service"`
+	} `json:"grpc"`
 	Database struct {
 		Host     string `json:"host"`
 		Port     int    `json:"port"`

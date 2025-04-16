@@ -2,6 +2,12 @@
   "http": {
     "port": ":3002"
   },
+  "grpc": {
+    "port": ":4002",
+    "service": {
+      "user": ":4001"
+    }
+  },
   "database": {
     "host": "127.0.0.1",
     "port": 3306,

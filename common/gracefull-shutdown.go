@@ -1,4 +1,4 @@
-package http
+package common
 
 import (
 	"os"
@@ -6,20 +6,20 @@ import (
 	"syscall"
 )
 
-type GracefullHTTPShutdown struct {
+type GracefullShutdown struct {
 	channel chan os.Signal
 }
 
-func NewGracefullHTTPShutdown() *GracefullHTTPShutdown {
+func NewGracefullShutdown() *GracefullShutdown {
 	chanServer := make(chan os.Signal, 1)
 	signal.Notify(chanServer, syscall.SIGTERM, syscall.SIGINT, os.Interrupt)
 
-	return &GracefullHTTPShutdown{
+	return &GracefullShutdown{
 		channel: chanServer,
 	}
 }
 
-func (sc *GracefullHTTPShutdown) Wait() {
+func (sc *GracefullShutdown) Wait() {
 	defer close(sc.channel)
 
 	<-sc.channel

@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package invoice;
+
+option go_package = "compiled/invoice";
+
+service InvoiceService {
+  rpc SelectByUserId (SelectByUserIdRequest) returns (SelectByUserIdResponse);
+}
+
+message SelectByUserIdRequest {
+  string user_id = 1;
+}
+
+message InvoiceInfo {
+  string id = 1;
+  string email = 2;
+  float amount = 3;
+  int64 created_at = 4;
+}
+
+message SelectByUserIdResponse {
+  repeated InvoiceInfo invoices = 1;
+}

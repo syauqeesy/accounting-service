@@ -6,22 +6,26 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/syauqeesy/accounting-service/common"
 	common_http "github.com/syauqeesy/accounting-service/common/http"
 	"github.com/syauqeesy/accounting-service/invoice/configuration"
 	"github.com/syauqeesy/accounting-service/invoice/handler"
+	grpc_outbound "github.com/syauqeesy/accounting-service/invoice/outbound/grpc"
 	"github.com/syauqeesy/accounting-service/invoice/repository"
 	"github.com/syauqeesy/accounting-service/invoice/service"
 )
 
 type httpApplication struct {
-	configuration *configuration.Configuration
-	mux           *http.ServeMux
-	server        *http.Server
-	httpSignal    *common_http.GracefullHTTPShutdown
-	database      *databaseApplication
-	repository    *repository.Repository
-	service       *service.Service
-	handler       *handler.Handler
+	configuration          *configuration.Configuration
+	mux                    *http.ServeMux
+	server                 *http.Server
+	httpSignal             *common.GracefullShutdown
+	database               *databaseApplication
+	repository             *repository.Repository
+	service                *service.Service
+	handler                *handler.Handler
+	grpcOutboundService    *grpc_outbound.GRPCOutboundService
+	grpcOutboundConnection *grpc_outbound.GRPCOutboundConnection
 }
 
 func (a *httpApplication) Init() error {
@@ -44,7 +48,9 @@ func (a *httpApplication) Init() error {
 
 	a.repository = repository.New(a.database.database)
 
-	a.service = service.New(a.configuration, a.repository)
+	a.grpcOutboundConnection, a.grpcOutboundService = grpc_outbound.New(a.configuration)
+
+	a.service = service.New(a.configuration, a.repository, a.grpcOutboundService)
 
 	a.handler = handler.New(a.mux, a.configuration, a.service)
 
@@ -57,7 +63,7 @@ func (a *httpApplication) Init() error {
 		Handler: a.mux,
 	}
 
-	a.httpSignal = common_http.NewGracefullHTTPShutdown()
+	a.httpSignal = common.NewGracefullShutdown()
 
 	return nil
 }

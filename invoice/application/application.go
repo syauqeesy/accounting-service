@@ -58,6 +58,10 @@ func New(applicationType string, arguments []string) (Application, error) {
 		return &httpApplication{
 			configuration: configuration,
 		}, nil
+	case ApplicationGRPC:
+		return &grpcApplication{
+			configuration: configuration,
+		}, nil
 	case ApplicationMigration:
 		application := &migrationApplication{
 			configuration: configuration,
