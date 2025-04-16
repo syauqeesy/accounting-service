@@ -15,21 +15,17 @@ type GRPCOutboundService struct {
 	Invoice invoice.InvoiceServiceClient
 }
 
-func New(configuration *configuration.Configuration) (*GRPCOutboundConnection, *GRPCOutboundService) {
+func New(configuration *configuration.Configuration) *GRPCOutboundService {
 	invoiceServiceConnection, err := grpc.NewClient(configuration.GRPC.Service.Invoice, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		panic(err)
-	}
-
-	grpcOutboundConnection := &GRPCOutboundConnection{
-		InvoiceService: invoiceServiceConnection,
 	}
 
 	grpcOutboundService := &GRPCOutboundService{
 		Invoice: invoice.NewInvoiceServiceClient(invoiceServiceConnection),
 	}
 
-	return grpcOutboundConnection, grpcOutboundService
+	return grpcOutboundService
 }
 
 func (o *GRPCOutboundConnection) Close() error {

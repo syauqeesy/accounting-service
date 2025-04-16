@@ -16,16 +16,15 @@ import (
 )
 
 type httpApplication struct {
-	configuration          *configuration.Configuration
-	mux                    *http.ServeMux
-	server                 *http.Server
-	httpSignal             *common.GracefullShutdown
-	database               *databaseApplication
-	repository             *repository.Repository
-	service                *service.Service
-	handler                *handler.Handler
-	grpcOutboundService    *grpc_outbound.GRPCOutboundService
-	grpcOutboundConnection *grpc_outbound.GRPCOutboundConnection
+	configuration       *configuration.Configuration
+	mux                 *http.ServeMux
+	server              *http.Server
+	httpSignal          *common.GracefullShutdown
+	database            *databaseApplication
+	repository          *repository.Repository
+	service             *service.Service
+	handler             *handler.Handler
+	grpcOutboundService *grpc_outbound.GRPCOutboundService
 }
 
 func (a *httpApplication) Init() error {
@@ -48,7 +47,7 @@ func (a *httpApplication) Init() error {
 
 	a.repository = repository.New(a.database.database)
 
-	a.grpcOutboundConnection, a.grpcOutboundService = grpc_outbound.New(a.configuration)
+	a.grpcOutboundService = grpc_outbound.New(a.configuration)
 
 	a.service = service.New(a.configuration, a.repository, a.grpcOutboundService)
 
