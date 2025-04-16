@@ -15,10 +15,10 @@ func (Account) TableName() string {
 	return "accounts"
 }
 
-func (a *Account) GetInfo() *payload.AccountInfo {
+func (m *Account) GetInfo() *payload.AccountInfo {
 	return &payload.AccountInfo{
-		Id:        a.Id,
-		Email:     a.Email,
-		CreatedAt: a.CreatedAt,
+		Id:        m.Id,
+		Email:     m.Email,
+		CreatedAt: m.CreatedAt,
 	}
 }

@@ -6,10 +6,10 @@ import (
 	common_http "github.com/syauqeesy/accounting-service/common/http"
 )
 
-type accountHandler handler
+type invoiceHandler handler
 
-func (h *accountHandler) List(w http.ResponseWriter, r *http.Request) {
-	result, err := h.Service.Account.List()
+func (h *invoiceHandler) List(w http.ResponseWriter, r *http.Request) {
+	result, err := h.Service.Invoice.List()
 	if err != nil {
 		common_http.HandleHttpError(w, http.StatusInternalServerError, http.StatusText(http.StatusInternalServerError))
 	}

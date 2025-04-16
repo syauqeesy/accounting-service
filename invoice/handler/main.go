@@ -3,8 +3,8 @@ package handler
 import (
 	"net/http"
 
-	"github.com/syauqeesy/accounting-service/user/configuration"
-	"github.com/syauqeesy/accounting-service/user/service"
+	"github.com/syauqeesy/accounting-service/invoice/configuration"
+	"github.com/syauqeesy/accounting-service/invoice/service"
 )
 
 type handler struct {
@@ -13,7 +13,7 @@ type handler struct {
 }
 
 type Handler struct {
-	Account *accountHandler
+	Invoice *invoiceHandler
 }
 
 func New(mux *http.ServeMux, configuration *configuration.Configuration, service *service.Service) *Handler {
@@ -23,10 +23,10 @@ func New(mux *http.ServeMux, configuration *configuration.Configuration, service
 	}
 
 	h := &Handler{
-		Account: (*accountHandler)(handler),
+		Invoice: (*invoiceHandler)(handler),
 	}
 
-	mux.HandleFunc("GET /account", h.Account.List)
+	mux.HandleFunc("GET /invoice", h.Invoice.List)
 
 	return h
 }
