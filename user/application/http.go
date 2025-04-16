@@ -9,6 +9,7 @@ import (
 	common_http "github.com/syauqeesy/accounting-service/common/http"
 	"github.com/syauqeesy/accounting-service/user/configuration"
 	"github.com/syauqeesy/accounting-service/user/handler"
+	"github.com/syauqeesy/accounting-service/user/repository"
 	"github.com/syauqeesy/accounting-service/user/service"
 )
 
@@ -17,14 +18,33 @@ type httpApplication struct {
 	mux           *http.ServeMux
 	server        *http.Server
 	httpSignal    *common_http.GracefullHTTPShutdown
+	database      *databaseApplication
+	repository    *repository.Repository
 	service       *service.Service
 	handler       *handler.Handler
 }
 
 func (a *httpApplication) Init() error {
-	a.service = service.New(a.configuration)
 
 	a.mux = http.NewServeMux()
+
+	a.database = &databaseApplication{
+		configuration: a.configuration,
+	}
+
+	err := a.database.Init()
+	if err != nil {
+		return err
+	}
+
+	err = a.database.Run()
+	if err != nil {
+		return err
+	}
+
+	a.repository = repository.New(a.database.database)
+
+	a.service = service.New(a.configuration, a.repository)
 
 	a.handler = handler.New(a.mux, a.configuration, a.service)
 
@@ -60,6 +80,8 @@ func (a *httpApplication) Run() error {
 }
 
 func (a *httpApplication) Close() error {
+	a.database.Close()
+
 	fmt.Println("shutting down http server...")
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)

@@ -26,7 +26,7 @@ func New(mux *http.ServeMux, configuration *configuration.Configuration, service
 		Account: (*accountHandler)(handler),
 	}
 
-	mux.HandleFunc("POST /account", h.Account.Register)
+	mux.HandleFunc("GET /account", h.Account.Register)
 
 	return h
 }

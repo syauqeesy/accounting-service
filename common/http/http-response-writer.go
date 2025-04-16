@@ -6,11 +6,11 @@ import (
 )
 
 type HttpJsonResponse struct {
-	Message string       `json:"message"`
-	Data    *interface{} `json:"data"`
+	Message string      `json:"message"`
+	Data    interface{} `json:"data"`
 }
 
-func WriteHttpResponse(w http.ResponseWriter, status int, message string, payload *interface{}) {
+func WriteHttpResponse(w http.ResponseWriter, status int, message string, payload interface{}) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
 
