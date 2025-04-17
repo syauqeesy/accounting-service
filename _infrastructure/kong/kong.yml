@@ -1,0 +1,19 @@
+_format_version: "3.0"
+services:
+  - name: user-service-http
+    url: http://user_service:3001
+    routes:
+      - name: user-http-route
+        paths:
+          - /user
+        methods:
+          - GET
+
+  - name: invoice-service-http
+    url: http://invoice_service:3002
+    routes:
+      - name: invoice-http-route
+        paths:
+          - /invoice
+        methods:
+          - GET
