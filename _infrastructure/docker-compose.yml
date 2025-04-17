@@ -10,11 +10,12 @@ services:
       KONG_PROXY_ERROR_LOG: /dev/stderr
       KONG_ADMIN_ERROR_LOG: /dev/stderr
       KONG_ADMIN_LISTEN: 0.0.0.0:8001, 0.0.0.0:8444 ssl
+      KONG_PORTAL: true
+      KONG_PORTAL_GUI_HOST: "localhost:8002"
     ports:
       - "80:8000"
-      - "8443:8443"
       - "8001:8001"
-      - "8444:8444"
+      - "8002:8002"
     networks:
       - infrastructure
   user_service:
