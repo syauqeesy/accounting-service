@@ -5,7 +5,7 @@
   "grpc": {
     "port": ":4001",
     "service": {
-      "invoice": ":4002"
+      "invoice": "127.0.0.1:4002"
     }
   },
   "database": {
